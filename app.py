@@ -19,6 +19,10 @@ rekening_aktif_ids = []  # Khusus menampung ID rekening berstatus AKTIF
 kartu_map = {}           # {no_rekening: [no_kartu_1, ...]}
 rekening_info_map = {}  # {no_rekening: {'saldo_efektif': ..., 'hold': ...}}
 
+def create_tables(c):
+    c.execute(Path(__file__).with_name('DDL.sql').read_text())
+
+    print("selesai create table")
 
 def backfill_produk_tabungan(c):
     global produk_ids
@@ -412,6 +416,8 @@ def backfill_instruksi_terjadwal(c):
 if __name__ == "__main__":
     with psycopg.connect(db_uri) as conn:
         with conn.cursor() as c:
+            create_tables(c)
+            
             c.execute("SELECT count(*) FROM nasabah")
             if c.fetchone()[0] > 0:
                 raise SystemExit("sudah pernah backfill")
