@@ -2,6 +2,7 @@ import random
 import psycopg
 from datetime import date, datetime, timedelta
 from faker import Faker
+from pathlib import Path
 
 db_uri = "host=localhost port=5432 dbname=data_management user=postgres password=password"
 
